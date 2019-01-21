@@ -1,0 +1,14 @@
+#!/bin/bash
+clear
+printf '\e[32;196m '
+echo "================================================================== v2.4 =="
+echo "                          Fujitsu Scanner Installer "
+printf '\e[93;5;196m \n'
+echo -e "\e[1m"
+echo "                           === Coded by Anit S ==="
+echo " "
+echo -e "\e[5m \e[25m"
+echo "                             for KM Technologies "
+printf '\e[32;196m \n'
+echo "=========================================================================="
+./exp.n

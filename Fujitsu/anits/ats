@@ -1,0 +1,182 @@
+#!/bin/bash
+
+phaseone()
+{
+printf '\nYep. All Good to Go\n '
+printf '\nStarting Installer...  '
+sleep 3
+./log
+
+MACHINE_TYPE=`uname -m`
+if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+xbit=1
+
+elif [ ${MACHINE_TYPE} == 'x86' ]; then
+xbit=2
+
+else
+printf "\n"
+echo "Failed to Find Architecture"
+xbit=3
+fi
+
+if [ "$xbit" == '1' ]; then
+echo "printf '\nArchitecture                : 64bit'">>exp.n
+elif [ "$xbit" == '2' ]; then
+echo "printf '\nArchitecture                : 32bit'">>exp.n
+elif [ "$xbit" == '3' ]; then
+echo "printf '\nArchitecture                : unknown'">>exp.n
+fi
+echo "printf '\n==========================================================================\n'">>exp.n
+./log
+echo "Please DOWNLOAD the DEB package for the above configuration and put it in ContaineR folder"
+cd ..
+printf '\n\n'
+echo "You will be directed to the official webpage soon"
+printf '\n\n'
+sleep 5
+echo "program paused for user intervension..."
+printf '\n\n'
+echo "PUT THE DEB PACKAGE IN ContaineR FOLDER, COME BACK HERE AND PRESS ENTER TO CONTINUE..."
+sleep 2
+xterm -e x-www-browser "http://www.fujitsu.com/global/support/products/computing/peripheral/scanners/"
+read e
+sudo dpkg -i ContaineR/*.deb
+cd anits
+echo "printf '\nInstalling Driver           : done'">>exp.n
+./log
+printf "\n\n"
+read -n 1 -s -r -p "==> Now Connect the Scanner, Turn it ON and Press any Key to continue"
+echo " keystrock detected"
+
+sudo apt install simple-scan -y 
+sudo apt install xsane -y
+
+./log
+echo "printf '\nInstalling Interface        : done'">>exp.n
+sleep 2
+./log
+echo "printf '\nFinishing installation      : done '">>exp.n
+sleep 2
+./log
+echo "printf '\nValidating installation     : done '">>exp.n
+printf '\nValidating installation ... '
+sleep 3
+which xsane
+if [ $? != 0 ]; then
+printf '\e[31;196m '
+printf '\nFound Errors in installation.'
+sleep 4
+fi
+./log
+sleep 2
+printf '\n\n== Installation Completed ==\n '
+sleep 2
+./log
+echo "printf '\nSelf Destruction Sequence   : activated'">>exp.n
+sleep 4
+./log
+printf "\n\nThis installation package will be self destructed in : \n\n"
+seconds=30; date1=$((`date +%s` + $seconds)); 
+while [ "$date1" -ge `date +%s` ]; do 
+  echo -ne "$(date -u --date @$(($date1 - `date +%s` )) +%H:%M:%S)\r"; 
+done
+xsane 
+cd ..
+cd ..
+sudo rm -r Fujitsu
+clear
+printf '\n\n\nThis Program is Strictly based on the Installation Guide Provided\n\n © an ATS venture\n\n\n\n\n\n\n\n\n\n\n\n'
+exit
+}
+
+echo "#!/bin/bash">exp.n
+chmod +x exp.n
+
+xbit=0
+ser=0
+offlin=0
+ubu=0
+clear
+printf "\n\nInitializing Installer...\n==========================================\n\n\n"
+sudo apt update
+if [[ "$(ping -c 1 8.8.8.8 | grep '100% packet loss' )" != "" ]]; then
+    echo "printf '\e[31;196m '">>exp.n
+    echo "printf '\nInternet Connectivity       : Bad'">>exp.n
+	echo "printf '\e[32;196m '">>exp.n
+	read -n 1 -s -r -p "Seems like there is no Active Internet Connection"
+	echo "Proceeding Anyway..."
+    sleep 3
+else
+    echo "printf '\nInternet Connectivity       : Good'">>exp.n
+fi
+if [ "$offlin" == "0" ]; then
+sudo apt install firefox
+sudo apt install xterm
+sudo apt update
+if [ $? != 0 ];
+then
+echo "printf '\e[31;196m'">>exp.n
+echo "printf '\nUpdating System             : failed'">>exp.n
+echo "printf '\e[32;196m '">>exp.n
+./log
+printf "\nUpdation Failed, Retrying with Fix..."
+sleep 4
+   sudo rm -rf /var/lib/apt/lists/* -vf
+   sudo rm /var/cache/apt/archives/lock -f
+   sudo rm /var/lib/dpkg/lock -f
+    sudo apt-get update -f
+else
+echo "printf '\nUpdating System             : done'">>exp.n
+fi
+else 
+echo "printf '\e[31;196m'">>exp.n
+echo "printf '\nUpdating System             : failed'">>exp.n
+echo "printf '\e[32;196m '">>exp.n
+./log
+fi
+
+./log
+sleep 2
+sudo apt remove pfusp -y
+sudo apt remove pfufs -y
+sudo apt remove xsane -y
+sudo apt remove simple-scan -y
+sudo apt autoremove -y
+echo "printf '\nRemoving Older versions     : done'">>exp.n
+./log
+
+echo "printf '\n==========================================================================\n'">>exp.n
+
+os_type=`lsb_release -i | sed 's/Distributor ID: *	*//g'`
+
+    os_version=`lsb_release -r | sed 's/Release: *	*//g' | cut -d . -f 1`
+
+    if [ "x${os_type}" = "xUbuntu" -a "x${os_version}" = "x18" ];
+    then
+    ubu=18   
+	echo "printf '\nFinding OS release          : ubuntu 18.XX'">>exp.n
+    
+	elif [ "x${os_type}" = "xUbuntu" -a "x${os_version}" = "x16" ];
+    then
+    ubu=16   
+	echo "printf '\nFinding OS release          : ubuntu 16.XX'">>exp.n
+    
+    elif [ "x${os_type}" = "xUbuntu" -a "x${os_version}" = "x14" ];
+    then
+    ubu=14
+	echo "printf '\nFinding OS release          : ubuntu 14.XX'">>exp.n
+    
+    elif [ "x${os_type}" = "xUbuntu" -a "x${os_version}" = "x12" ];
+    then
+    ubu=12   
+	echo "printf '\nFinding OS release          : ubuntu 12.XX'">>exp.n
+    
+    else     
+    printf '\nUnable to detect OS release'
+    ubu="unknown"
+    echo "printf '\n'">>exp.n
+    echo "echo Finding OS release              : ubuntu $ubu ">>exp.n     
+    fi
+	phaseone;   
+   
