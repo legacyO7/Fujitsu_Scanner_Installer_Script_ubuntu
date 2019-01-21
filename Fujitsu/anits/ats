@@ -1,0 +1,334 @@
+#!/bin/bash
+
+off_spacesaver() {
+echo "printf '\e[31;196m '">>exp.n
+echo "printf '\nDependency check            : failed'">>exp.n
+echo "printf '\e[32;196m '">>exp.n
+./log
+sleep 3
+printf '\n\n\nOverriding Dependency check ... '
+sleep 3
+}
+
+phaseone()
+{
+printf '\nYep. All Good to Go\n '
+printf '\nStarting Installer...  '
+sleep 3
+./log
+printf "\n\n"
+echo "Select series "
+echo "1) SP                   2) FI"
+echo "Enter (1/2)"
+read val
+if [ "$val" == "1" ]; then
+ser=1
+fi
+if [ "$val" == "2" ]; then
+ser=2
+fi
+
+MACHINE_TYPE=`uname -m`
+if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+xbit=1
+
+elif [ ${MACHINE_TYPE} == 'x86' ]; then
+xbit=2
+
+else
+printf "\n\n"
+echo "Failed to Find Arc. Enter it manually"
+echo "1) 32 bit                   2) 64 bit"
+echo "Enter (1/2)"
+read val
+if [ "$val" == "1" ]; then
+xbit=2
+fi
+if [ "$val" == "2" ]; then
+xbit=1
+fi
+fi
+cd ..
+if [ "$ser" == '1' ]; then
+echo "printf '\nSeries                      : SP'">>anits/exp.n
+if [ "$xbit" == '1' ]; then
+echo "printf '\nFinding Arc                 : 64bit'">>anits/exp.n
+sudo dpkg -i driv/pfusp-ubuntu14.04_2.1.0_amd64.deb
+elif [ "$xbit" == '2' ]; then
+echo "printf '\nFinding Arc                 : 32bit'">>anits/exp.n
+sudo dpkg -i driv/pfusp-ubuntu14.04_2.1.0_i386.deb
+fi
+elif [ "$ser" == '2' ]; then
+echo "printf '\nSeries                      : FI'">>anits/exp.n
+if [ "$xbit" == '1' ]; then
+echo "printf '\nFinding Arc                 : 64bit'">>anits/exp.n
+sudo dpkg -i driv/pfufs-ubuntu14.04_2.1.0_amd64.deb
+elif [ "$xbit" == '2' ]; then
+echo "printf '\nFinding Arc                 : 32bit'">>anits/exp.n
+sudo dpkg -i driv/pfufs-ubuntu14.04_2.1.0_i386.deb
+fi
+fi
+cd anits
+echo "printf '\nInstalling driver           : done'">>exp.n
+./log
+printf "\n\n"
+read -n 1 -s -r -p "==> Now Connect the Scanner, Turn it ON and Press any Key to continue"
+echo " keystrock detected"
+
+if [ "$offlin" == "0" ]; then
+sudo apt install simple-scan -y 
+sudo apt install xsane -y
+else
+protocol_off;
+fi
+./log
+echo "printf '\nInstalling Interface        : done'">>exp.n
+sleep 2
+./log
+echo "printf '\nFinishing installation      : done '">>exp.n
+sleep 2
+./log
+echo "printf '\nValidating installation     : done '">>exp.n
+printf '\nValidating installation ... '
+sleep 3
+which xsane
+if [ $? != 0 ]; then
+printf '\e[31;196m '
+printf '\nFound Errors in installation\nAttempting to Fix...'
+sleep 4
+protocol_off_direct;
+fi
+./log
+sleep 2
+printf '\n\n== Installation Completed ==\n '
+sleep 2
+./log
+echo "printf '\nSelf Destruction Sequence   : activated'">>exp.n
+sleep 4
+./log
+printf "\n\nThis installation package will be self destructed in : \n\n"
+seconds=30; date1=$((`date +%s` + $seconds)); 
+while [ "$date1" -ge `date +%s` ]; do 
+  echo -ne "$(date -u --date @$(($date1 - `date +%s` )) +%H:%M:%S)\r"; 
+done
+xsane 
+cd ..
+cd ..
+sudo rm -r Fujitsu
+clear
+printf '\n\n\nThis Program is Strictly based on the Installation Guide Provided\n\n © an ATS venture\n\n\n\n\n\n\n\n\n\n\n\n'
+exit
+}
+
+protocol_off()
+{
+clear
+printf '\e[31;196m \n'
+printf "\nOffline Protocol\n\n==> This is an experimental installation procedure for computers with firewall protection\n or having no internet access\nChances of success are very less\n\n"
+read -n 1 -s -r -p "==> Press any Key to continue" 
+protocol_off_direct;
+}
+
+protocol_off_direct()
+{
+
+ if [ "$ubu" == "12" ]; then
+   sudo dpkg -i xsane/xsane-common_0.998-3ubuntu2_all.deb
+ 
+ elif [ "$ubu" == "14" ]; then
+    sudo dpkg -i xsane/xsane-common_0.998-5ubuntu1_all.deb
+    
+ elif [ "$ubu" == "16" ]; then
+    sudo dpkg -i xsane/xsane-common_0.999-3ubuntu1_all.deb
+    
+ else    
+    sudo dpkg -i xsane/xsane-common_0.999-5ubuntu2_all.deb  
+    
+ fi
+
+if [ "$xbit" == '1' ]; then
+
+if [ "$ubu" == "18" ]; then 
+sudo dpkg -i xsane/xsane_0.999-5ubuntu2_amd64.deb
+if [ $? != 0 ]; then
+off_spacesaver;
+sudo dpkg --ignore-depends=libc6,libgimp2.0,libglib2.0-0,libgtk2.0-0,libjpeg8,liblcms2-2,libpng16-16,libsane1,libtiff5,zlib1g,xsane-common -i xsane/xsane_0.999-5ubuntu2_amd64.deb
+else
+echo "printf '\nDependency check            : satisfied'">>exp.n
+fi
+
+elif [ "$ubu" == "16" ]; then
+sudo dpkg -i xsane/xsane_0.999-3ubuntu1_amd64.deb
+if [ $? != 0 ]; then
+off_spacesaver;
+sudo dpkg --ignore-depends=libc6,libgimp2.0,libglib2.0-0,libgtk2.0-0,libjpeg8,liblcms2-2,libpng12-0,libsane,libtiff5,zlib1g,xsane-common -i xsane/xsane_0.999-3ubuntu1_amd64.deb
+else
+echo "printf '\nDependency check            : satisfied'">>exp.n
+fi
+
+elif [ "$ubu" == "14" ]; then
+sudo dpkg -i xsane/xsane_0.998-5ubuntu1_amd64.deb
+if [ $? != 0 ]; then
+off_spacesaver;
+sudo dpkg --ignore-depends=libc6,libgimp2.0,libglib2.0-0,libgtk2.0-0,libjpeg8,liblcms1,libpng12-0,libsane,libtiff5,zlib1g,xsane-common -i xsane/xsane_0.998-5ubuntu1_amd64.deb
+else
+echo "printf '\nDependency check            : satisfied'">>exp.n
+fi
+
+elif [ "$ubu" == "12" ]; then
+sudo dpkg -i xsane/xsane_0.998-3ubuntu2_amd64.deb
+if [ $? != 0 ]; then
+off_spacesaver;
+sudo dpkg --ignore-depends=libc6,libgimp2.0,libglib2.0-0,libgtk2.0-0,libjpeg8,liblcms1,libpng12-0,libsane,libtiff4,zlib1g,xsane-common -i xsane/xsane_0.998-3ubuntu2_amd64.deb
+else
+echo "printf '\nDependency check            : satisfied'">>exp.n
+fi
+
+else
+printf "\nnothing to do!"
+fi
+
+else   
+
+if [ "$ubu" == "18" ]; then 
+sudo dpkg -i xsane/xsane_0.999-5ubuntu2_i386.deb
+if [ $? != 0 ]; then
+off_spacesaver;
+sudo dpkg --ignore-depends=libc6,libgimp2.0,libglib2.0-0,libgtk2.0-0,libjpeg8,liblcms2-2,libpng16-16,libsane1,libtiff5,zlib1g,xsane-common -i xsane/xsane_0.999-5ubuntu2_i386.deb
+else
+echo "printf '\nDependency check            : satisfied'">>exp.n
+fi
+
+elif [ "$ubu" == "16" ]; then
+sudo dpkg -i xsane/xsane_0.999-3ubuntu1_i386.deb
+if [ $? != 0 ]; then
+off_spacesaver;
+sudo dpkg --ignore-depends=libc6,libgimp2.0,libglib2.0-0,libgtk2.0-0,libjpeg8,liblcms2-2,libpng12-0,libsane,libtiff5,zlib1g,xsane-common -i xsane/xsane_0.999-3ubuntu1_i386.deb
+else
+echo "printf '\nDependency check            : satisfied'">>exp.n
+fi
+
+elif [ "$ubu" == "14" ]; then
+sudo dpkg -i xsane/xsane_0.998-5ubuntu1_i386.deb
+if [ $? != 0 ]; then
+off_spacesaver;
+sudo dpkg --ignore-depends=libc6,libgimp2.0,libglib2.0-0,libgtk2.0-0,libjpeg8,liblcms1,libpng12-0,libsane,libtiff5,zlib1g,xsane-common -i xsane/xsane_0.998-5ubuntu1_i386.deb
+else
+echo "printf '\nDependency check            : satisfied'">>exp.n
+fi
+
+elif [ "$ubu" == "12" ]; then
+sudo dpkg -i xsane/xsane_0.998-3ubuntu2_i386.deb
+if [ $? != 0 ]; then
+off_spacesaver;
+sudo dpkg --ignore-depends=libc6,libgimp2.0,libglib2.0-0,libgtk2.0-0,libjpeg8,liblcms1,libpng12-0,libsane,libtiff4,zlib1g,xsane-common -i xsane/xsane_0.998-3ubuntu2_i386.deb
+else
+echo "printf '\nDependency check            : satisfied'">>exp.n
+fi
+
+else
+printf "\nnothing to do!"
+fi
+fi
+./log
+}
+
+echo "#!/bin/bash">exp.n
+chmod +x exp.n
+
+xbit=0
+ser=0
+offlin=0
+ubu=0
+clear
+printf "\n\nInitializing Installer...\n==========================================\n\n\n"
+sudo apt update
+if [[ "$(ping -c 1 8.8.8.8 | grep '100% packet loss' )" != "" ]]; then
+    echo "printf '\e[31;196m '">>exp.n
+    echo "printf '\nInternet Connectivity       : Bad'">>exp.n
+	echo "printf '\e[32;196m '">>exp.n
+	read -n 1 -s -r -p "Seems like there is no Active Internet Connection"
+	printf '\n\n '
+    printf 'Would you like to execute Offline Installation Protocol? (y/n)'
+    read val
+    if [ "$val" == "y" ]; then 
+    offlin=1
+	echo "Proceeding Anyway..."
+    sleep 3
+    fi
+else
+    echo "printf '\nInternet Connectivity       : Good'">>exp.n
+fi
+if [ "$offlin" == "0" ]; then
+sudo apt update
+if [ $? != 0 ];
+then
+echo "printf '\e[31;196m'">>exp.n
+echo "printf '\nUpdating System             : failed'">>exp.n
+echo "printf '\e[32;196m '">>exp.n
+./log
+printf "\nUpdation Failed, Retrying with Fix..."
+sleep 4
+   sudo rm -rf /var/lib/apt/lists/* -vf
+   sudo rm /var/cache/apt/archives/lock -f
+   sudo rm /var/lib/dpkg/lock -f
+    sudo apt-get update -f
+else
+echo "printf '\nUpdating System             : done'">>exp.n
+fi
+else 
+echo "printf '\e[31;196m'">>exp.n
+echo "printf '\nUpdating System             : failed'">>exp.n
+echo "printf '\e[32;196m '">>exp.n
+./log
+fi
+
+./log
+sleep 2
+sudo apt remove pfusp -y
+sudo apt remove pfufs -y
+sudo apt remove xsane -y
+sudo apt remove simple-scan -y
+sudo apt autoremove -y
+echo "printf '\nRemoving Older versions     : done'">>exp.n
+./log
+os_type=`lsb_release -i | sed 's/Distributor ID: *	*//g'`
+
+    os_version=`lsb_release -r | sed 's/Release: *	*//g' | cut -d . -f 1`
+
+    if [ "x${os_type}" = "xUbuntu" -a "x${os_version}" = "x18" ];
+    then
+    ubu=18   
+	echo "printf '\nFinding OS release          : ubuntu 18.XX'">>exp.n
+    
+	elif [ "x${os_type}" = "xUbuntu" -a "x${os_version}" = "x16" ];
+    then
+    ubu=16   
+	echo "printf '\nFinding OS release          : ubuntu 16.XX'">>exp.n
+    
+    elif [ "x${os_type}" = "xUbuntu" -a "x${os_version}" = "x14" ];
+    then
+    ubu=14
+	echo "printf '\nFinding OS release          : ubuntu 14.XX'">>exp.n
+    
+    elif [ "x${os_type}" = "xUbuntu" -a "x${os_version}" = "x12" ];
+    then
+    ubu=12   
+	echo "printf '\nFinding OS release          : ubuntu 12.XX'">>exp.n
+    
+    else     
+    printf '\nUnable to detect OS release, Please specify 12 / 14 / 16 / 18'
+    printf '\nEnter     : 12 / 14 / 16 / 18      : '
+    read ubu
+    if [ "$ubu" == "12" ] || [ "$ubu" == "14" ] ||[ "$ubu" == "16" ] || [ "$ubu" == "18" ]; then
+    echo "printf '\n'">>exp.n
+    echo "echo Finding OS release              : ubuntu $ubu .XX">>exp.n
+    phaseone;    
+    else
+    read -n 1 -s -r -p "==> Can't Install on this OS release, Aborting..."
+    exit
+    fi
+    fi
+    if [ "$ubu" == "12" ] || [ "$ubu" == "14" ] ||[ "$ubu" == "16" ] || [ "$ubu" == "18" ]; then
+    phaseone;
+    fi
