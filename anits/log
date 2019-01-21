@@ -1,0 +1,14 @@
+#!/bin/bash
+clear
+echo "================================================================== v2.0 =="
+echo "                         Scanner Software Installer "
+printf '\e[93;5;196m \n'
+echo -e "\e[1m"
+echo "                           === Coded by Anit S ==="
+echo " "
+echo " "
+echo -e "\e[5m \e[25m"
+echo "                       on behalf of KM Technologies "
+printf '\e[32;196m \n'
+echo "=========================================================================="
+./exp.n

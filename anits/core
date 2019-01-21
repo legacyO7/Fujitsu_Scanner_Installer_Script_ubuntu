@@ -1,0 +1,81 @@
+#!/bin/bash
+
+./log
+cd ..
+
+xbit=0
+ser=0
+
+printf "\n\n"
+echo "Select series "
+echo "1) SP                   2) FI"
+echo "Enter (1/2)"
+read val
+if [ "$val" == "1" ]; then
+ser=1
+fi
+if [ "$val" == "2" ]; then
+ser=2
+fi
+
+MACHINE_TYPE=`uname -m`
+if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+xbit=1
+
+elif [ ${MACHINE_TYPE} == 'x86' ]; then
+xbit=2
+
+else
+printf "\n\n"
+echo "Failed to Find Arc. Enter it manually"
+echo "1) 32 bit                   2) 64 bit"
+echo "Enter (1/2)"
+read val
+if [ "$val" == "1" ]; then
+xbit=2
+fi
+if [ "$val" == "2" ]; then
+xbit=1
+fi
+fi
+if [ "$ser" == '1' ]; then
+echo "printf '\nSeries                  : SP'">>anits/exp.n
+if [ "$xbit" == '1' ]; then
+echo "printf '\nFinding Arc             : 64bit'">>anits/exp.n
+sudo dpkg -i driv/pfusp-ubuntu14.04_2.1.0_amd64.deb
+elif [ "$xbit" == '2' ]; then
+echo "printf '\nFinding Arc             : 32bit'">>anits/exp.n
+sudo dpkg -i driv/pfusp-ubuntu14.04_2.1.0_i386.deb
+fi
+elif [ "$ser" == '2' ]; then
+echo "printf '\nSeries                  : FI'">>anits/exp.n
+if [ "$xbit" == '1' ]; then
+echo "printf '\nFinding Arc             : 64bit'">>anits/exp.n
+sudo dpkg -i driv/pfufs-ubuntu14.04_2.1.0_amd64.deb
+elif [ "$xbit" == '2' ]; then
+echo "printf '\nFinding Arc             : 32bit'">>anits/exp.n
+sudo dpkg -i driv/pfufs-ubuntu14.04_2.1.0_i386.deb
+fi
+fi
+cd anits
+echo "printf '\nInstalling driver       : done'">>exp.n
+./log
+printf "\n\n"
+read -n 1 -s -r -p "==> Now Connect the Scanner, Turn it ON and Press any Key to continue"
+echo " keystrock detected"
+sudo apt install simple-scan -y 
+sudo apt install sane sane-utils libsane-extras xsane -y
+./log
+echo "printf '\nInstalling Interface    : done'">>exp.n
+./log
+echo "printf '\nFinishing installation  : done '">>exp.n
+xsane
+./log
+printf '\n\n== Installation Completed ==\n '
+sleep 5
+./log
+rm exp.n -f
+printf "\n\n"
+read -n 1 -s -r -p "==> THIS PROGRAM IS STRICTLY BASED ON THE INSTALLATION GUIDE PROVIDED"
+exit
+

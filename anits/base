@@ -1,0 +1,45 @@
+#!/bin/bash
+
+sudo apt update
+echo "#!/bin/bash">exp.n
+chmod +x exp.n
+
+if [[ "$(ping -c 1 8.8.8.8 | grep '100% packet loss' )" != "" ]]; then
+    echo "printf '\nInternet Connectivity   : Bad'">>exp.n
+	read -n 1 -s -r -p "Please ensure there is an Active Internet Connection"
+	printf '\n\n '
+	echo "Proceeding Anyway..."
+	sleep 3
+else
+    echo "printf '\nInternet Connectivity   : Good'">>exp.n
+fi
+
+sudo apt update
+if [ $? != 0 ];
+then
+echo "printf '\e[31;196m \n'">>exp.n
+echo "printf '\nUpdating System         : failed'">>exp.n
+echo "printf '\e[32;196m '">>exp.n
+./log
+printf "\nUpdation Failed, Retrying with Fix..."
+sleep 4
+   sudo rm -rf /var/lib/apt/lists/* -vf
+   sudo rm /var/cache/apt/archives/lock -f
+   sudo rm /var/lib/dpkg/lock -f
+    sudo apt-get update -f
+else
+echo "printf '\nUpdating System         : done'">>exp.n
+fi
+
+./log
+echo "printf '\nRemoving Older versions : done'">>exp.n
+sleep 2
+sudo apt remove pfusp -y
+sudo apt remove pfufs -y
+sudo apt remove xsane -y
+sudo apt remove simple-scan -y
+./log
+printf '\nYep. All Good to Go\n '
+printf '\nStarting Installer...  '
+sleep 3
+./core
