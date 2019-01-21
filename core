@@ -1,0 +1,66 @@
+#!/bin/bash
+./log
+sudo apt update
+./log
+printf 'Removing Older versions :  '
+sleep 2
+sudo apt remove pfusp -y
+sudo apt remove xsane -y
+sudo apt remove simple-scan -y
+./log
+printf 'Yep. All Good to Go\n '
+printf '\nStarting Installer...  '
+sleep 3
+
+./log
+printf 'Updating System         :  '
+sleep 3
+MACHINE_TYPE=`uname -m`
+if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+sudo dpkg -i pfusp-ubuntu14.04_2.1.0_amd64.deb
+elif [ ${MACHINE_TYPE} == 'x86' ]; then
+sudo dpkg -i pfusp-ubuntu14.04_2.1.0_i386.deb
+else
+echo "Failed to Find Arc. Enter it manually"
+echo "1) 32 bit                   2) 64 bit"
+echo "Enter (1/2)"
+read val
+if [ "$val" == "1" ]; then
+sudo dpkg -i pfusp-ubuntu14.04_2.1.0_i386.deb
+fi
+if [ "$val" == "2" ]; then
+sudo dpkg -i pfusp-ubuntu14.04_2.1.0_amd64.deb
+fi
+fi
+./log
+printf 'Updating System        : done '
+printf '\nInstalling driver      :  \n'
+sleep 2
+read -n 1 -s -r -p "==> Now Connect the Scanner, Turn it ON and Press any Key to continue"
+echo " keystrock detected"
+sudo apt install simple-scan -y 
+sudo apt install sane sane-utils libsane-extras xsane -y
+./log
+printf 'Updating System        : done '
+printf '\nInstalling driver      : done '
+printf '\nInstalling Interface   :  '
+sleep 5
+./log
+printf 'Updating System        : done '
+printf '\nInstalling driver      : done '
+printf '\nInstalling Interface   : done '
+printf '\nFinishing installation : '
+sleep 3
+simple-scan
+xsane
+./log
+printf 'Updating System        : done '
+printf '\nInstalling driver      : done '
+printf '\nInstalling Interface   : done '
+printf '\nFinishing installation : done '
+printf '\n== Installation Completed ==\n '
+sleep 5
+./log
+read -n 1 -s -r -p "==> THIS PROGRAM IS STRICTLY BASED ON THE INSTALLATION GUIDE PROVIDED"
+exit
+
