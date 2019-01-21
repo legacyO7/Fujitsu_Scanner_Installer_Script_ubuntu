@@ -1,0 +1,6 @@
+printf 'Finding Arc            : 64bit'
+printf 'Installing driver      : done'
+printf 'Finding Arc            : 64bit'
+printf 'Installing driver      : done'
+printf 'Finding Arc            : 64bit'
+printf 'Installing driver      : done'

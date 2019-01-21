@@ -1,0 +1,57 @@
+#!/bin/bash
+
+./log
+./exp.n
+cd ..
+
+MACHINE_TYPE=`uname -m`
+if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+echo "printf '\nFinding Arc             : 64bit'">>anits/exp.n
+sudo dpkg -i driv/pfusp-ubuntu14.04_2.1.0_amd64.deb
+
+
+elif [ ${MACHINE_TYPE} == 'x86' ]; then
+echo "printf '\nFinding Arc             : 32bit'">>anits/exp.n
+sudo dpkg -i driv/pfusp-ubuntu14.04_2.1.0_i386.deb
+
+else
+printf "\n\n"
+echo "Failed to Find Arc. Enter it manually"
+echo "1) 32 bit                   2) 64 bit"
+echo "Enter (1/2)"
+read val
+if [ "$val" == "1" ]; then
+echo "printf '\nFinding Arc             : 32bit'">>anits/exp.n
+sudo dpkg -i driv/pfusp-ubuntu14.04_2.1.0_i386.deb
+fi
+if [ "$val" == "2" ]; then
+echo "printf '\nFinding Arc             : 64bit'">>anits/exp.n
+sudo dpkg -i driv/pfusp-ubuntu14.04_2.1.0_amd64.deb
+fi
+fi
+
+cd anits
+echo "printf '\nInstalling driver       : done'">>exp.n
+./log
+./exp.n
+printf "\n\n"
+read -n 1 -s -r -p "==> Now Connect the Scanner, Turn it ON and Press any Key to continue"
+echo " keystrock detected"
+sudo apt install simple-scan -y 
+sudo apt install sane sane-utils libsane-extras xsane -y
+./log
+echo "printf '\nInstalling Interface    : done'">>exp.n
+./log
+./exp.n
+echo "printf '\nFinishing installation  : done '">>exp.n
+simple-scan
+xsane
+./log
+./exp.n
+printf '\n\n== Installation Completed ==\n '
+sleep 5
+./log
+rm exp.n -f
+read -n 1 -s -r -p "==> THIS PROGRAM IS STRICTLY BASED ON THE INSTALLATION GUIDE PROVIDED"
+exit
+
