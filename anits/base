@@ -26,6 +26,7 @@ sleep 4
    sudo rm -rf /var/lib/apt/lists/* -vf
    sudo rm /var/cache/apt/archives/lock -f
    sudo rm /var/lib/dpkg/lock -f
+    sudo apt-get -f install
     sudo apt-get update -f
 else
 echo "printf '\nUpdating System         : done'">>exp.n
