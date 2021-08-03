@@ -23,7 +23,7 @@ How to use
 
 
 note for dev :
-	Since I am terminated from KM Technologies, I wont be able to continue this project. So here I present 
+	  I wont be able to continue this project. So here I present 
 the final build (FSI v2.4) which will be compactable with any software modifications done be Fujitsu and 
 works for any Fujitsu high speed scanners. FSI v2.2 supports almost all Ubuntu installations but in future
 when it fails, this build (FSI v2.4) will help you continue the installation process. 
@@ -31,5 +31,5 @@ when it fails, this build (FSI v2.4) will help you continue the installation pro
 
 Thanks for the support. This project is closed
 
-Anit S 
-9400405691
+
+
